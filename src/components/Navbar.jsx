@@ -13,13 +13,17 @@ export default function Navbar() {
   return (
     <nav className="py-6 bg-white shadow-md w-full">
       <div className="max-w-[1080px] mx-auto w-full flex items-center justify-between">
-        <Link className="me-auto font-bold" to="/">Idea Bulletin</Link>
+        <Link className="me-auto font-bold" to="/">
+          Idea Bulletin
+        </Link>
 
         <div className="ms-auto">
           {user.current ? (
             <div className="flex items-center gap-2">
               <span>{user.current.email}</span>
-              <BaseButton onClick={() => setConfirmLogout(true)}>Logout</BaseButton>
+              <BaseButton onClick={() => setConfirmLogout(true)}>
+                Logout
+              </BaseButton>
             </div>
           ) : (
             <BaseButton href="/login">Login</BaseButton>
@@ -35,9 +39,13 @@ export default function Navbar() {
       >
         <p>Are you sure you want to logout?</p>
         <div className="mt-4 flex justify-end gap-2">
-          <BaseButton variant="secondary" onClick={() => setConfirmLogout(false)}>
+          <BaseButton
+            variant="secondary"
+            onClick={() => setConfirmLogout(false)}
+          >
             Cancel
           </BaseButton>
+
           <BaseButton
             onClick={() => {
               user.logout();

@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { XIcon } from "lucide-react";
 
 export default function Popup({ isOpen, onClose, title, children }) {
   return (
@@ -21,10 +22,10 @@ export default function Popup({ isOpen, onClose, title, children }) {
             {children}
 
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"
               onClick={onClose}
             >
-              ✕
+              <XIcon />
             </button>
           </motion.div>
         </motion.div>

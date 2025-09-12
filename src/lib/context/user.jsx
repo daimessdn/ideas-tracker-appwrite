@@ -30,7 +30,6 @@ export function UserProvider(props) {
         email,
         password
     }
-    console.log(accoutParam);
 
     await account.create(ID.unique(), accoutParam.email, accoutParam.password).then(res => {
       console.log(res);

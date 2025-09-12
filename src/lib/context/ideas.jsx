@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { tablesDB } from "../appwrite";
 import { ID, Query } from "appwrite";
+
+import { tablesDB } from "../appwrite";
+import { useUser } from "./user";
 
 export const IDEAS_DATABASE_ID = "ideas-tracker"; // Replace with your database ID
 export const IDEAS_TABLE_ID = "ideas"; // Replace with your table ID
 
 const IdeasContext = createContext();
+
 
 export function useIdeas() {
   return useContext(IdeasContext);
@@ -13,6 +16,7 @@ export function useIdeas() {
 
 export function IdeasProvider(props) {
   const [ideas, setIdeas] = useState([]);
+  const user = useUser();
 
   async function add(idea) {
     try {
@@ -22,7 +26,7 @@ export function IdeasProvider(props) {
         ID.unique(),
         idea
       );
-      setIdeas((ideas) => [response, ...ideas].slice(0, 10));
+      setIdeas((ideas) => [response, ...ideas].slice(0, 50));
     } catch (err) {
       console.log(err) // handle error or show user a message
     }
@@ -47,8 +51,10 @@ export function IdeasProvider(props) {
       const response = await tablesDB.listRows(
         IDEAS_DATABASE_ID,
         IDEAS_TABLE_ID,
-        [Query.orderDesc("$createdAt"), Query.limit(10)]
+        [Query.orderDesc("$createdAt"), Query.limit(50)]
       );
+
+      console.log(response.rows);
       setIdeas(response.rows);
     } catch (err) {
       console.log(err)
