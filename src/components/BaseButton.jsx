@@ -1,28 +1,50 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 export default function BaseButton({
   onClick,
   type = "button",
   children,
-  href,
-  variant = "primary", // "primary" | "secondary"
   disabled = false,
+  loading = false,
+  href,
+  variant = "primary", // primary / secondary
+  icon,
 }) {
-  const baseStyle =
-    "px-4 py-2 rounded font-bold transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+  const baseStyles =
+    "px-4 py-2 rounded shadow font-bold transition-colors duration-200 flex flex-row items-center gap-2 cursor-pointer w-fit";
 
   const variants = {
-    primary: "bg-blue-500 text-white shadow hover:bg-blue-600",
-    secondary: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100",
+    primary: "bg-blue-600 text-white hover:bg-blue-700",
+    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
   };
 
-  const className = `${baseStyle} ${variants[variant]}`;
+  const isDisabled = disabled || loading;
+
+  const content = (
+    <>
+      {loading && (
+        <motion.span
+          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+          aria-hidden="true"
+        />
+      )}
+
+      {icon && !loading && <span className="flex-shrink-0">{icon}</span>} 
+
+      <span>{loading ? "Loading..." : children}</span>
+    </>
+  );
 
   if (href) {
-    // kalau href ada → jadikan Link
     return (
-      <Link to={href} className={className}>
-        {children}
+      <Link
+        to={href}
+        className={`${baseStyles} ${variants[variant]} ${
+          isDisabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
+        {content}
       </Link>
     );
   }
@@ -30,11 +52,13 @@ export default function BaseButton({
   return (
     <button
       type={type}
-      className={className}
+      className={`${baseStyles} ${variants[variant]} ${
+        isDisabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
       onClick={onClick}
-      disabled={disabled}
+      disabled={isDisabled}
     >
-      {children}
+      {content}
     </button>
   );
 }
