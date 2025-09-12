@@ -1,44 +1,53 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { useUser } from "../lib/context/user";
+
+import BaseButton from "./BaseButton";
+import Popup from "./Popup";
 
 export default function Navbar() {
   const user = useUser();
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   return (
-    <nav className="border-b bg-white backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        {/* Logo / Brand */}
-        <a
-          href="/"
-          className="text-lg font-semibold text-gray-800 hover:text-gray-900"
-        >
-          Idea Tracker
-        </a>
+    <nav className="py-6 bg-white shadow-md w-full">
+      <div className="max-w-[1080px] mx-auto w-full flex items-center justify-between">
+        <Link className="me-auto font-bold" to="/">Idea Bulletin</Link>
 
-        {/* Navigation Right Side */}
-        <div className="flex items-center gap-3">
+        <div className="ms-auto">
           {user.current ? (
-            <>
-              <span className="text-sm font-medium text-gray-600">
-                {user.current.email}
-              </span>
-              <button
-                type="button"
-                onClick={() => user.logout()}
-                className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              >
-                Logout
-              </button>
-            </>
+            <div className="flex items-center gap-2">
+              <span>{user.current.email}</span>
+              <BaseButton onClick={() => setConfirmLogout(true)}>Logout</BaseButton>
+            </div>
           ) : (
-            <a
-              href="/login"
-              className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              Login
-            </a>
+            <BaseButton href="/login">Login</BaseButton>
           )}
         </div>
       </div>
+
+      {/* Popup Confirm Logout */}
+      <Popup
+        isOpen={confirmLogout}
+        onClose={() => setConfirmLogout(false)}
+        title="Confirm Logout"
+      >
+        <p>Are you sure you want to logout?</p>
+        <div className="mt-4 flex justify-end gap-2">
+          <BaseButton variant="secondary" onClick={() => setConfirmLogout(false)}>
+            Cancel
+          </BaseButton>
+          <BaseButton
+            onClick={() => {
+              user.logout();
+              setConfirmLogout(false);
+            }}
+          >
+            Logout
+          </BaseButton>
+        </div>
+      </Popup>
     </nav>
   );
 }

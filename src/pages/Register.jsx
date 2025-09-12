@@ -3,7 +3,7 @@ import { useUser } from "../lib/context/user";
 import { Link } from "react-router-dom";
 import BaseButton from "../components/BaseButton";
 
-export function Login() {
+export function Register() {
   const user = useUser();
 
   const [email, setEmail] = useState("");
@@ -11,8 +11,8 @@ export function Login() {
 
   return (
     <section className="max-w-[1080px] mx-auto flex flex-col gap-4 mt-6 p-6 bg-white shadow rounded">
-      <h1 className="text-2xl font-bold">Login</h1>
-      <p>Welcome back! Please login to continue.</p>
+      <h1 className="text-2xl font-bold">Register</h1>
+      <p>Create an account to share your ideas and brainstorm together!</p>
 
       <form className="w-full flex flex-col gap-3">
         <input
@@ -31,15 +31,15 @@ export function Login() {
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <BaseButton onClick={() => user.login(email, password)}>
-          Login
+        <BaseButton onClick={() => user.register(email, password)}>
+          Register
         </BaseButton>
       </form>
 
       <p className="text-sm text-gray-600">
-        Don’t have an account?{" "}
-        <Link to="/register" className="text-blue-600 hover:underline">
-          Register here
+        Already have an account?{" "}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Login here
         </Link>
       </p>
     </section>
